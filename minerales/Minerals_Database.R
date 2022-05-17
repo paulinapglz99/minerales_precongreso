@@ -23,7 +23,7 @@ library("viridis") #colores wonitos
 #Recuerda que debemos tener los datos en nuestro directorio de trabajo
 #Ahora tenemos que leeer los datos. Los asignaremos a un objeto.
 
-datos_minerales <- vroom("Minerals_Database.csv")  #La funcion vroom lee de manera automatica cualquier dataset
+datos_minerales <- vroom( file = "https://data.biofreelancer.com/minerales" )  #La funcion vroom lee de manera automatica cualquier dataset
 
 #Una vez que hemos leido los datos, podemos visualizarlos en nuestra seccion de Data 
 
