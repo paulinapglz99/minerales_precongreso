@@ -10,7 +10,8 @@ install.packages("dplyr")   #para el manejo de datos
 install.packages("ggplot2") #para los graficos
 install.packages("vroom") #para leer datos facilmente
 install.packages("stringr") #para filtrar datos 
-install.packages("viridis") #colores wonitos
+install.packages("viridis") #colores bonitos
+install.packages("ggrepel") #colores bonitos
 
 #Llamar a las liberias
 
@@ -19,10 +20,11 @@ library("ggplot2") #para los graficos
 library("vroom") #para leer datos facilmente
 library("stringr") #para filtrar datos 
 library("viridis") #colores bonitos
+library("ggrepel")
 
 #Alternativa
 
-#pacman::p_load("dplyr", "ggplot2", "vroom", "stringr", "viridis")
+#pacman::p_load("dplyr", "ggplot2", "vroom", "stringr", "viridis", "ggrepel")
 
 #Recuerda que debemos tener los datos en nuestro directorio de trabajo
 #Ahora tenemos que leer los datos. Los asignaremos a un objeto.
@@ -95,10 +97,40 @@ burbujas_4 <- burbujas_3 +
 
 burbujas_4
 
+#Agregar lineas verticales
+
+burbujas_5 <- burbujas_4 +
+  geom_segment( mapping = aes( x = Molar_Mass,
+                               xend = Molar_Mass,
+                               y = 0,
+                               yend = vol )) 
+
+#Vis
+
+burbujas_5
+
 #Pero no siempre lo haremos por partes...
 
 burbujas <- datos_minerales_filtrados %>% 
-  ggplot(aes(x = Molar_Mass, y = Molar_Volume, color = Calculated_Density))
+  ggplot(aes(x = Molar_Mass, y = Molar_Volume, color = Calculated_Density)) +
+    geom_point(size = 5, 
+             alpha=0.7) +
+  geom_text_repel(label = names) + 
+  geom_segment( mapping = aes( x = Molar_Mass,
+                               xend = Molar_Mass,
+                               y = 0,
+                               yend = vol )) #Aqui el subtitulo
+  labs(x = "Masa molar", 
+       y = "Volumen Molar",
+       color = "Densidad", 
+       title = "Volumen molar y densidad calculada", #Aqui ponemos el titulo con la funcion labs
+       subtitle = "Para minerales") +
+  scale_color_viridis() +
+  theme_classic()
+
+#Visualizacion
+
+burbujas
 
 #Ahora solo vamos a guardar en formato pdf
 
@@ -108,3 +140,5 @@ ggsave( filename = "densidad_minerales.png",           # el nombre tiene extensi
         width = 10, height = 5,                      # 7 de ancho por 5 de alto
         units = "in",                               # pulgadas
         dpi = 300 )
+
+#Lo hiciste!
